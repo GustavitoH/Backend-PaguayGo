@@ -1,60 +1,60 @@
-const Deudores = require('../models/deudores')
+const Cobradores = require('../models/cobradores')
 
-function listDeudores(req, res) {
-    Deudores.find((err, deudoresList) => {
+function listCobradores(req, res) {
+    Cobradores.find((err, cobradoresList) => {
     if (err) {
       res.status(500).send({
         message:
           'Error!, El servidor esta teniendo problemas, intente nuevamente',
       });
     } else {
-      if (deudoresList) {
+      if (cobradoresList) {
         res.status(200).json({
-          deudores: deudoresList,
+            cobrador: cobradoresList,
         });
       }
     }
   });
 }
 
-function getDeudores(req, res) {
+function getCobradores(req, res) {
   const id = req.params.id;
 
-  Deudores.find({ _id: id }, (err, deudor) => {
+  Cobradores.find({ _id: id }, (err, cobrador) => {
     if (err) {
       res.status(500).send({
         message:
           'Error!, El servidor esta teniendo problemas, intente nuevamente',
       });
     } else {
-      if (deudor) {
+      if (cobrador) {
         res.status(200).json({
-            deudor: deudor,
+            cobrador: cobrador,
         });
       }
     }
   });
 }
 
-function saveDeudor(req, res){
-  const deudor = new Deudores();
+function saveCobrador(req, res){
+  const cobrador = new Cobradores();
   const params = req.body;
 
-  if (params.cedula) {
-      deudor.cedula = params.cedula;
-      deudor.nombre = params.nombre;
-      deudor.telefono = params.telefono;
-      deudor.correo = params.correo;
+  if (params.ruc) {
+    cobrador.nombre = params.nombre;
+    cobrador.servicio = params.servicio;
+    cobrador.ruc = params.ruc;
+    cobrador.direccion = params.direccion;
 
-      deudor.save((err, deudorStored) => {
+      cobrador.save((err, cobradorStored) => {
           if (err) {
               res.status(500).send({
                   message: 'Error de servidor'
               })
           } else {
-              if (deudorStored) {
+              if (cobradorStored) {
                   res.status(200).send({
-                    deudor: deudorStored
+                    cobrador: cobradorStored
                   })
               } else {
                   res.status(200).send({
@@ -65,48 +65,48 @@ function saveDeudor(req, res){
       })
   } else {
       res.status(200).send({
-          message: 'Cedula obligatoria'
+          message: 'ruc obligatorio'
       })
   }
 }
 
-const updateDeudor = async (req, res) => {
+const updateCobrador = async (req, res) => {
   let id = req.params.id;
   let update = req.body;
-  Deudores.findByIdAndUpdate(id, update, { new: true }, (err, deudorUpdate) => {
+  Cobradores.findByIdAndUpdate(id, update, { new: true }, (err, cobradorUpdate) => {
     if (err) {
       res.status(500).send({
         message: 'Server error',
       });
     } else {
-      if (deudorUpdate) {
+      if (cobradorUpdate) {
         res.status(200).send({
-            deudor: deudorUpdate,
+            cobrador: cobradorUpdate,
         });
       } else {
         res.status(404).send({
-          message: 'Deudores not found',
+          message: 'Cobrador not found',
         });
       }
     }
   });
 }
 
-function deleteDeudor(req, res) {
+function deleteCobrador(req, res) {
   var id = req.params.id;
-  Deudores.findByIdAndRemove(id, (err, deudorRemoved) => {
+  Cobradores.findByIdAndRemove(id, (err, cobradorRemoved) => {
     if (err) {
       res.status(500).send({
         message: 'error del servidor',
       });
     } else {
-      if (deudorRemoved) {
+      if (cobradorRemoved) {
         res.status(200).send({
-            deudor: deudorRemoved,
+            cobrador: cobradorRemoved,
         });
       } else {
         res.status(404).send({
-          message: 'deudores not found.',
+          message: 'Cobradores not found.',
         });
       }
     }
@@ -114,5 +114,5 @@ function deleteDeudor(req, res) {
 }
 
 module.exports = {
-    listDeudores, getDeudores, saveDeudor, updateDeudor, deleteDeudor
+    listCobradores, getCobradores, saveCobrador, updateCobrador, deleteCobrador
 }

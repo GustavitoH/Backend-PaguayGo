@@ -1,112 +1,115 @@
-const Deudores = require('../models/deudores')
+const Pagos = require('../models/pagos')
 
-function listDeudores(req, res) {
-    Deudores.find((err, deudoresList) => {
+function listPagos(req, res) {
+    Pagos.find((err, pagosList) => {
     if (err) {
       res.status(500).send({
         message:
           'Error!, El servidor esta teniendo problemas, intente nuevamente',
       });
     } else {
-      if (deudoresList) {
+      if (pagosList) {
         res.status(200).json({
-          deudores: deudoresList,
+            pagos: pagosList,
         });
       }
     }
   });
 }
 
-function getDeudores(req, res) {
+function getPagos(req, res) {
   const id = req.params.id;
 
-  Deudores.find({ _id: id }, (err, deudor) => {
+  Pagos.find({ _id: id }, (err, pagos) => {
     if (err) {
       res.status(500).send({
         message:
           'Error!, El servidor esta teniendo problemas, intente nuevamente',
       });
     } else {
-      if (deudor) {
+      if (pagos) {
         res.status(200).json({
-            deudor: deudor,
+            pagos: pagos,
         });
       }
     }
   });
 }
 
-function saveDeudor(req, res){
-  const deudor = new Deudores();
+function savePagos(req, res){
+  const pago = new Pagos();
   const params = req.body;
 
-  if (params.cedula) {
-      deudor.cedula = params.cedula;
-      deudor.nombre = params.nombre;
-      deudor.telefono = params.telefono;
-      deudor.correo = params.correo;
+  if (pago) {
+    pago.deudor = params.deudor;
+    pago.cobrador = params.cobrador;
+    pago.total = params.total;
+    pago.fecha = params.fecha;
 
-      deudor.save((err, deudorStored) => {
+        pago.save((err, pagoStored) => {
           if (err) {
+              console.log(err);
               res.status(500).send({
                   message: 'Error de servidor'
               })
           } else {
-              if (deudorStored) {
+              if (pagoStored) {
                   res.status(200).send({
-                    deudor: deudorStored
+                    pago: pagoStored
                   })
               } else {
                   res.status(200).send({
-                      message: 'No se guardo el deudor'
+                      message: 'No se guardo el pago'
                   })
               }
           }
       })
   } else {
+      console.log(res);
       res.status(200).send({
-          message: 'Cedula obligatoria'
+          message: 'Deudor y cobrador son obligatorios'
+          
       })
   }
 }
 
-const updateDeudor = async (req, res) => {
+const updatePago = async (req, res) => {
   let id = req.params.id;
   let update = req.body;
-  Deudores.findByIdAndUpdate(id, update, { new: true }, (err, deudorUpdate) => {
+  Pagos.findByIdAndUpdate(id, update, { new: true }, (err, pagoUpdate) => {
     if (err) {
       res.status(500).send({
         message: 'Server error',
       });
     } else {
-      if (deudorUpdate) {
+      if (pagoUpdate) {
         res.status(200).send({
-            deudor: deudorUpdate,
+            pago: pagoUpdate,
         });
       } else {
         res.status(404).send({
-          message: 'Deudores not found',
+          message: 'Pago not found',
         });
       }
     }
   });
 }
 
-function deleteDeudor(req, res) {
+function deletePago(req, res) {
   var id = req.params.id;
-  Deudores.findByIdAndRemove(id, (err, deudorRemoved) => {
+  Pagos.findByIdAndRemove(id, (err, pagoRemoved) => {
     if (err) {
       res.status(500).send({
         message: 'error del servidor',
       });
     } else {
-      if (deudorRemoved) {
+      if (pagoRemoved) {
         res.status(200).send({
-            deudor: deudorRemoved,
+            pago: pagoRemoved,
         });
       } else {
         res.status(404).send({
-          message: 'deudores not found.',
+          message: 'pago not found.',
         });
       }
     }
@@ -114,5 +117,5 @@ function deleteDeudor(req, res) {
 }
 
 module.exports = {
-    listDeudores, getDeudores, saveDeudor, updateDeudor, deleteDeudor
+    listPagos, getPagos, savePagos, updatePago, deletePago
 }
