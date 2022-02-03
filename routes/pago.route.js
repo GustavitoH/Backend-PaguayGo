@@ -4,6 +4,7 @@ const pagoController = require('../controllers/pagos.controller')
 const api = express.Router();
 
 api.get('/pagos', pagoController.listPagos)
+api.get('/pagosfull', pagoController.getPagosFull)
 api.get('/pagos/:id', pagoController.getPagos)
 api.post('/pagos', pagoController.savePagos)
 api.put('/pagos/:id', pagoController.updatePago)

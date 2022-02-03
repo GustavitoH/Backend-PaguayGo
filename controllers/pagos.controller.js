@@ -17,6 +17,31 @@ function listPagos(req, res) {
   });
 }
 
+function getPagosFull(req, res) {
+  Pagos.aggregate([
+    {
+        $lookup: {
+        from: 'cobradores',
+        localField: 'cobrador',
+        foreignField: '_id',
+        as: 'cobradors'
+      }
+    }, {
+      $lookup: {
+        from: 'deudores',
+        localField: 'deudor',
+        foreignField: '_id',
+        as: 'deudors'
+      }
+    }]).then((result) => {
+      if (result) {
+        res.status(200).json({
+            pagosfull: result,
+        });
+      }
+  });
+}
+
 function getPagos(req, res) {
   const id = req.params.id;
 
@@ -117,5 +142,5 @@ function deletePago(req, res) {
 }
 
 module.exports = {
-    listPagos, getPagos, savePagos, updatePago, deletePago
+    listPagos, getPagosFull, getPagos, savePagos, updatePago, deletePago
 }
