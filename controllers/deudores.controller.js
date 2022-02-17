@@ -36,6 +36,25 @@ function getDeudores(req, res) {
   });
 }
 
+
+function getDeudoresByCorreo(req, res) {
+  const {correo, cedula} = req.body;
+  Deudores.find({ correo: correo , cedula: cedula}, (err, deudor) => {
+    if (err) {
+      res.status(500).send({
+        message:
+          'Error!, El servidor esta teniendo problemas, intente nuevamente',
+      });
+    } else {
+      if (deudor) {
+        res.status(200).json({
+            deudor: deudor,
+        });
+      }
+    }
+  });
+}
+
 function saveDeudor(req, res){
   const deudor = new Deudores();
   const params = req.body;
@@ -114,5 +133,10 @@ function deleteDeudor(req, res) {
 }
 
 module.exports = {
-    listDeudores, getDeudores, saveDeudor, updateDeudor, deleteDeudor
+    listDeudores, 
+    getDeudores, 
+    getDeudoresByCorreo, 
+    saveDeudor, 
+    updateDeudor, 
+    deleteDeudor
 }

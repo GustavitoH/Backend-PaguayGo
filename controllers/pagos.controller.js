@@ -44,7 +44,6 @@ function getPagosFull(req, res) {
 
 function getPagos(req, res) {
   const id = req.params.id;
-
   Pagos.find({ _id: id }, (err, pagos) => {
     if (err) {
       res.status(500).send({
@@ -142,5 +141,10 @@ function deletePago(req, res) {
 }
 
 module.exports = {
-    listPagos, getPagosFull, getPagos, savePagos, updatePago, deletePago
+    listPagos, 
+    getPagosFull, 
+    getPagos, 
+    savePagos, 
+    updatePago, 
+    deletePago
 }

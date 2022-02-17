@@ -4,6 +4,7 @@ const deudorController = require('../controllers/deudores.controller')
 const api = express.Router();
 
 api.get('/deudores', deudorController.listDeudores)
+api.post('/deudor', deudorController.getDeudoresByCorreo)
 api.get('/deudores/:id', deudorController.getDeudores)
 api.post('/deudores', deudorController.saveDeudor)
 api.put('/deudores/:id', deudorController.updateDeudor)
